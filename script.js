@@ -1,61 +1,81 @@
-const player = ((marker, name) => {
+
+// Factory function to create new player object
+const player = (marker, name) => {
     let _marker = marker;
     let _name = name;
-    const getMarker = () => {
-        return _marker;
-    } 
-    const getName = () => {
-        return _name;
-    }
+
+    const getMarker = () => _marker;
+    const getName = () => _name;
     return {
         getMarker,
         getName
     }
-});
+};
 
-let board = (() => {
-    let _board = new Array(9).fill("_");
-    let _turn = "X";
-    
-    function move(space) {
-        if (_board[space] !== " ") return;
-        _board[space] = _turn;
-        _turn = (_turn === "X") ? "O" : "X";
-        displayController.render();
-    }
+
+// Board module
+const gameBoard = (() => {
+    let _board = new Array(9).fill("");
+
+    const getBoard = () => _board;
+
+    const setMove = (space) => {
+        // Checks if space is occupied
+        if (getBoard()[space]) return;
+
+        getBoard()[space] = game.getTurn() ? "X" : "O";
+        game.setTurn();
+        displayController.render(space);
+    };
 
     return {
-        move: move,
-        
+        setMove,
+        getBoard
     };
 })();
 
 
-let displayController = (() => {
-    function init() {
-        let _p1 = player("X");
-        let _p2 = player("O");
+// Module to control the display
+const displayController = (() => {
+    // Marks the square clicked on
+    const render = (space) => {
+        let boardSpace = document.getElementById(`id${space + 1}`);
+        boardSpace.innerHTML = gameBoard.getBoard()[space];
+    };
 
-        const spaces = document.querySelectorAll('.space');
-        for(let i = 0; i < 9; i++) {
-            console.log(spaces[i]);
-        }
-    }
-
-    function render() {
-        const spaces = document.querySelectorAll('.space');
-        for(let i = 0; i < 9; i++) {
-            spaces[i].innerHTML = board[i];
-            // console.log(spaces[i]);
-        }
-    }
-
-    init();
     return {
         render
-    }
-
+    };
 })();
 
 
-// board.init();
+const game = (() => {
+    const p1 = () => {return player("X", "Player 1")};
+    const p2 = () => {return player("O", "Player 2")};
+    let _turn = true;
+    
+    // Initialization function
+    const init = () => {             
+        let b = Array.from(document.querySelectorAll('.space'));
+        for (let i = 0; i < 9; i++) {
+            b[i].addEventListener('click', function () {
+                gameBoard.setMove(i)});
+        }
+    }
+
+    const setTurn = () => {
+        _turn = _turn ? false : true;
+    }
+
+    const getTurn = () => _turn;
+
+    return {
+        p1,
+        p2,
+        init,
+        getTurn,
+        setTurn
+    };
+})();
+
+game.init();
