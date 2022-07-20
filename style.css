@@ -71,3 +71,11 @@ body {
     font-size: 3.5vw;
     border: none;
 }
+
+.X {
+    color: hsl(60, 100%, 70%);
+}
+
+.O {
+    color: hsl(240, 100%, 70%);
+}

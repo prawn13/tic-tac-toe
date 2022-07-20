@@ -56,6 +56,7 @@ const displayController = (() => {
     // Marks the square clicked on
     const render = (space) => {
         let boardSpace = document.getElementById(`id${space + 1}`);
+        boardSpace.classList.add(`${gameBoard.getBoard()[space]}`);
         boardSpace.innerHTML = gameBoard.getBoard()[space];
     };
 
@@ -142,11 +143,6 @@ const game = (() => {
 
     // checks board array for all 8 possible win combos, returns winner
     const checkWin = (b) => {
-        // Check for tie
-        if (b.filter(s => s === "").length === 0){
-            return "Tie";
-        }
-
         // Check board against the 8 win combos
         for (let w = 0; w < 8; w++) {
             let pos1 = b[_winCombos[w][0]];
@@ -159,6 +155,10 @@ const game = (() => {
             }
         }
 
+        // Check for tie
+        if (b.filter(s => s === "").length === 0){
+            return "Tie";
+        }
     };
 
     return {
