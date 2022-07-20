@@ -29,6 +29,14 @@ body {
     background-color: #881337;
     padding: 10px;
     display: grid;
+    text-align: center;
+}
+
+.score {
+    font-size: 8vw;
+    align-self: center;
+    color: rgb(255, 0, 0);
+    border: 4px solid black;
 }
 
 .pname {

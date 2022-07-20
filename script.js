@@ -1,8 +1,7 @@
-
 // Factory function to create new player object
 const player = (marker, name) => {
-    let _marker = marker;
-    let _name = name;
+    const _marker = marker;
+    const _name = name;
     let _score = 0;
 
     const getMarker = () => _marker;
@@ -14,7 +13,8 @@ const player = (marker, name) => {
     return {
         getMarker,
         getName,
-        score
+        score,
+        _score
     }
 };
 
@@ -22,7 +22,6 @@ const player = (marker, name) => {
 // Board module
 const gameBoard = (() => {
     let _board = new Array(9).fill("");
-    // let _board = new Array(3).fill(new Array(3).fill(""));
 
     const getBoard = () => _board;
 
@@ -35,7 +34,7 @@ const gameBoard = (() => {
         // Checks if space is occupied
         if (getBoard()[space] || game.isOver()) return;
 
-        getBoard()[space] = game.getTurn() ? game.p1().getMarker() : game.p2().getMarker();
+        getBoard()[space] = game.getTurn() ? game.p1.getMarker() : game.p2.getMarker();
         game.setTurn();
         displayController.render(space);
         let w = game.checkWin(getBoard());
@@ -64,9 +63,9 @@ const displayController = (() => {
     // Displays the winner as text and increment score
     const showWinner = (winner) => {
         let winBanner = document.getElementById('win-banner');
-        winBanner.innerText = `${winner.getName()} IS THE WINNER!`;
+        winBanner.innerHTML = `<span style="color: yellow">~${winner.getName()}~</span> wins!!!`;
         let winScore = document.getElementById(`${winner.getMarker()}-score`);
-        winScore.innerText = winner.score();
+        winScore.innerText = winner.score();        
     };
 
     // Resets the board and hides winner text
@@ -88,13 +87,13 @@ const displayController = (() => {
 
 
 const game = (() => {
-    const p1 = () => {return player("X", "PLAYER 1")};
-    const p2 = () => {return player("O", "PLAYER 2")};
+    let p1 = player("X", "PLAYER 1");
+    let p2 = player("O", "PLAYER 2");
     let _turn = true;
     let _over = false;
 
     // All array indice combos to win
-    let winCombos = [
+    let _winCombos = [
         ['0', '1', '2'], // top row
         ['0', '3', '6'], // left column
         ['0', '4', '8'], // right diagonal
@@ -138,14 +137,18 @@ const game = (() => {
 
     // checks board array for all 8 possible win combos, returns winner
     const checkWin = (b) => {
+        for (let s of b) {
+            if (s) {break;}
+        }
+
         for (let w = 0; w < 8; w++) {
-            let pos1 = b[winCombos[w][0]];
-            let pos2 = b[winCombos[w][1]];
-            let pos3 = b[winCombos[w][2]];
+            let pos1 = b[_winCombos[w][0]];
+            let pos2 = b[_winCombos[w][1]];
+            let pos3 = b[_winCombos[w][2]];
 
             if (pos1 && pos1 === pos2 && pos1 === pos3) {
                 _over = true;
-                return (pos1 === game.p1().getMarker()) ? game.p1() : game.p2();
+                return (pos1 === p1.getMarker()) ? p1 : p2;
             }
         }
 
