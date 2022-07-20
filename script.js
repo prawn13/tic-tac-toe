@@ -55,9 +55,13 @@ const gameBoard = (() => {
 const displayController = (() => {
     // Marks the square clicked on
     const render = (space) => {
+        let arrSpace = gameBoard.getBoard()[space];
         let boardSpace = document.getElementById(`id${space + 1}`);
-        boardSpace.classList.add(`${gameBoard.getBoard()[space]}`);
-        boardSpace.innerHTML = gameBoard.getBoard()[space];
+        if (arrSpace) {
+            boardSpace.setAttribute('class', `space ${arrSpace}`);
+        }
+        
+        boardSpace.innerHTML = arrSpace;
     };
 
     // Displays the winner/tie as text and increment score
@@ -68,7 +72,8 @@ const displayController = (() => {
             winBanner.innerText = "It's a tie!";
         }
         else {
-            winBanner.innerHTML = `<span style="color: yellow">~${winner.getName()}~</span> wins!!!`;
+            winBanner.classList.toggle(`${winner.getMarker()}`);
+            winBanner.innerHTML = `${winner.getName()} wins!!!`;
             let winScore = document.getElementById(`${winner.getMarker()}-score`);
             winScore.innerText = winner.score();  
         }
@@ -81,6 +86,7 @@ const displayController = (() => {
         }
         let winBanner = document.getElementById('win-banner');
         winBanner.innerText = "Welcome! Tic tac toe;";
+        winBanner.removeAttribute('class');
 
     };
 

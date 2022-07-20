@@ -73,9 +73,9 @@ body {
 }
 
 .X {
-    color: hsl(60, 100%, 70%);
+    color: #ffff66;
 }
 
 .O {
-    color: hsl(240, 100%, 70%);
+    color: #6666ff;
 }
