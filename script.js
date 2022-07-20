@@ -59,12 +59,18 @@ const displayController = (() => {
         boardSpace.innerHTML = gameBoard.getBoard()[space];
     };
 
-    // Displays the winner as text and increment score
+    // Displays the winner/tie as text and increment score
     const showWinner = (winner) => {
         let winBanner = document.getElementById('win-banner');
-        winBanner.innerHTML = `<span style="color: yellow">~${winner.getName()}~</span> wins!!!`;
-        let winScore = document.getElementById(`${winner.getMarker()}-score`);
-        winScore.innerText = winner.score();        
+        
+        if (winner === "Tie") {
+            winBanner.innerText = "It's a tie!";
+        }
+        else {
+            winBanner.innerHTML = `<span style="color: yellow">~${winner.getName()}~</span> wins!!!`;
+            let winScore = document.getElementById(`${winner.getMarker()}-score`);
+            winScore.innerText = winner.score();  
+        }
     };
 
     // Resets the board and hides winner text
@@ -136,10 +142,12 @@ const game = (() => {
 
     // checks board array for all 8 possible win combos, returns winner
     const checkWin = (b) => {
-        for (let s of b) {
-            if (s) {break;}
+        // Check for tie
+        if (b.filter(s => s === "").length === 0){
+            return "Tie";
         }
 
+        // Check board against the 8 win combos
         for (let w = 0; w < 8; w++) {
             let pos1 = b[_winCombos[w][0]];
             let pos2 = b[_winCombos[w][1]];
