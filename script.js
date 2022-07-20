@@ -13,8 +13,7 @@ const player = (marker, name) => {
     return {
         getMarker,
         getName,
-        score,
-        _score
+        score
     }
 };
 
