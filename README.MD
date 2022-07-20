@@ -1,0 +1,3 @@
+This is the Tic-Tac-Toe project from The Odin Project's JavaScript path.
+
+The goal was to learn about modules and factory functions to reduce global code. This project definitely forced me to think through the assignment in a way I hadn't needed to in other projects. My tendency is often to dive right into coding because I'm excited, but having to slow down and plan ahead was very valuable in this case, and definitely saved me time in the long run, AND resulted in me having cleaner, easier-to-read code that was organized in a logical way, rather than just kind of hacking something together like I often have in the past.

@@ -1,24 +1,65 @@
+body {
+    display: grid;
+    justify-content: center;
+    background-color: hsl(210, 40%, 80%);
+}
+
+* {
+    border-radius: 10px;
+    color: hsl(210, 40%, 96%);
+    font-family: 'Comic Sans MS', Arial, Helvetica, sans-serif;
+}
 
 .container {
     display: grid;
+    grid-template: 1fr 6fr 1fr / 1fr 4fr 1fr;
+    width: 80vw;
+    gap: 30px;
+    margin: 6px;
 }
 
 .board {
     display: grid;
+    grid-area: 2 / 2 / 3 / 3;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    justify-content: stretch;
+}
+
+.player {
+    font-size: 3em;
+    background-color: #881337;
+    padding: 10px;
+    display: grid;
+}
+
+.pname {
+    text-align: center;
+    text-decoration: underline hsl(210, 40%, 76%) 4px;
 }
 
 .space {
-    background-color: grey;
-    font-size: 40px;
-    text-align: center;
-    height: 10vh;
-    width: auto;
+    display: grid;
+    place-content: center;
     margin: 2px;
-    border-radius: 6px;
+    background-color: #475569;
+    color: #f1f5f9;
+    font-size: 5vw;    
+    width: auto;
+    
 }
 
 #win-banner {
-    font-size: 40px;
+    grid-column: 1 / 4;
+    font-size: 4vw;
+    text-align: center;
+    background-color: #991b1b;
+    padding: 20px;
+    min-height: 80px;
+    max-height: 80px;
+}
+
+#reset {
+    grid-area: 3 / 2 / 4 / 3;
+    background-color: #dc2626;
+    font-size: 3.5vw;
+    border: none;
 }

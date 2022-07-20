@@ -3,12 +3,18 @@
 const player = (marker, name) => {
     let _marker = marker;
     let _name = name;
+    let _score = 0;
 
     const getMarker = () => _marker;
     const getName = () => _name;
+    const score = () => {
+        _score++;
+        return _score;
+    }
     return {
         getMarker,
-        getName
+        getName,
+        score
     }
 };
 
@@ -27,9 +33,9 @@ const gameBoard = (() => {
     // Marks the board with players move, and checks for win condition
     const setMove = (space) => {
         // Checks if space is occupied
-        if (getBoard()[space]) return;
+        if (getBoard()[space] || game.isOver()) return;
 
-        getBoard()[space] = game.getTurn() ? "X" : "O";
+        getBoard()[space] = game.getTurn() ? game.p1().getMarker() : game.p2().getMarker();
         game.setTurn();
         displayController.render(space);
         let w = game.checkWin(getBoard());
@@ -55,10 +61,12 @@ const displayController = (() => {
         boardSpace.innerHTML = gameBoard.getBoard()[space];
     };
 
-    // Displays the winner as text
+    // Displays the winner as text and increment score
     const showWinner = (winner) => {
         let winBanner = document.getElementById('win-banner');
-        winBanner.innerText = `${winner} is the winner!`;
+        winBanner.innerText = `${winner.getName()} IS THE WINNER!`;
+        let winScore = document.getElementById(`${winner.getMarker()}-score`);
+        winScore.innerText = winner.score();
     };
 
     // Resets the board and hides winner text
@@ -67,7 +75,7 @@ const displayController = (() => {
             displayController.render(i);
         }
         let winBanner = document.getElementById('win-banner');
-        winBanner.innerText = "";
+        winBanner.innerText = "Welcome! Tic tac toe;";
 
     };
 
@@ -80,10 +88,11 @@ const displayController = (() => {
 
 
 const game = (() => {
-    const p1 = () => {return player("X", "Player 1")};
-    const p2 = () => {return player("O", "Player 2")};
+    const p1 = () => {return player("X", "PLAYER 1")};
+    const p2 = () => {return player("O", "PLAYER 2")};
     let _turn = true;
-    
+    let _over = false;
+
     // All array indice combos to win
     let winCombos = [
         ['0', '1', '2'], // top row
@@ -108,8 +117,13 @@ const game = (() => {
         r.addEventListener('click', function (){ reset();})
     }
 
+    // Checks if game is over to accept input
+    const isOver = () => _over;
+
     // Resets the game
     const reset = () => {
+        _turn = true;
+        _over = false;
         gameBoard.resetBoard();
         displayController.resetDisplay();
     }
@@ -130,7 +144,8 @@ const game = (() => {
             let pos3 = b[winCombos[w][2]];
 
             if (pos1 && pos1 === pos2 && pos1 === pos3) {
-                return (pos1 === "X") ? "Player 1" : "Player 2";
+                _over = true;
+                return (pos1 === game.p1().getMarker()) ? game.p1() : game.p2();
             }
         }
 
@@ -142,7 +157,8 @@ const game = (() => {
         init,
         getTurn,
         setTurn,
-        checkWin
+        checkWin,
+        isOver
     };
 })();
 
